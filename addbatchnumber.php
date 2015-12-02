@@ -59,12 +59,23 @@ if($_POST){
 		if($flag == 0){
 			if($indexcat['A'] < $totalpercat[0]){
 				echo "this is ".$categoryx [0]." = ".$i;
+				
 				$query = mysql_query("SELECT * FROM codeswaga WHERE category = '$categoryx[0]' AND batchno IS NULL ORDER BY RAND() LIMIT ".$maxnumberperfile);
 				$indexcat['A']++;
+				$myfile = fopen($indexcat['A']."-".$categoryx[0].".txt", "w") or die("Unable to open file!");
+				
 				echo ">>>".$indexcat['A']."</br>";
 					while($row = mysql_fetch_array($query)){
 						$codenumber = $row{"codenumber"};
+						$prizeprint = $row{"prize"};
+						
+						if(is_numeric($prizeprint) == TRUE){
+							$prizeprint = "#N".number_format($prizeprint)."#";
+						}
+						
 						$updatequerySK = mysql_query("UPDATE codeswaga SET batchno = '$index' WHERE codenumber = '$codenumber'");	
+						$codestring = "\"".$index."\",\"".$row{"codenumber"}."\",\"".$prizeprint."\" ".PHP_EOL;
+						fwrite($myfile, $codestring);
 						$index++;
 					}				
 				$flag++;
@@ -78,10 +89,20 @@ if($_POST){
 				echo "this is ".$categoryx [1]." = ".$i;
 				$query = mysql_query("SELECT * FROM codeswaga WHERE category = '$categoryx[1]' AND batchno IS NULL ORDER BY RAND() LIMIT ".$maxnumberperfile);
 				$indexcat['B']++;
+				$myfile = fopen($indexcat['B']."-".$categoryx[1].".txt", "w") or die("Unable to open file!");
+				
 				echo ">>>".$indexcat['B']."</br>";
 					while($row = mysql_fetch_array($query)){
 						$codenumber = $row{"codenumber"};
+						$prizeprint = $row{"prize"};
+						
+						if(is_numeric($prizeprint) == TRUE){
+							$prizeprint = "#N".number_format($prizeprint)."#";
+						}
+						
 						$updatequerySK = mysql_query("UPDATE codeswaga SET batchno = '$index' WHERE codenumber = '$codenumber'");	
+						$codestring = "\"".$index."\",\"".$row{"codenumber"}."\",\"".$prizeprint."\" ".PHP_EOL;
+						fwrite($myfile, $codestring);
 						$index++;
 					}
 				$flag++;
@@ -96,10 +117,20 @@ if($_POST){
 				echo "this is ".$categoryx [2]." = ".$i;
 				$query = mysql_query("SELECT * FROM codeswaga WHERE category = '$categoryx[2]' AND batchno IS NULL ORDER BY RAND() LIMIT ".$maxnumberperfile);
 				$indexcat['C']++;
+				$myfile = fopen($indexcat['C']."-".$categoryx[2].".txt", "w") or die("Unable to open file!");
+				
 				echo ">>>".$indexcat['C']."</br>";
 					while($row = mysql_fetch_array($query)){
 						$codenumber = $row{"codenumber"};
+						$prizeprint = $row{"prize"};
+						
+						if(is_numeric($prizeprint) == TRUE){
+							$prizeprint = "#N".number_format($prizeprint)."#";
+						}
+						
 						$updatequerySK = mysql_query("UPDATE codeswaga SET batchno = '$index' WHERE codenumber = '$codenumber'");	
+						$codestring = "\"".$index."\",\"".$row{"codenumber"}."\",\"".$prizeprint."\" ".PHP_EOL;
+						fwrite($myfile, $codestring);
 						$index++;
 					}
 				$flag++;
@@ -114,10 +145,20 @@ if($_POST){
 				echo "this is ".$categoryx [3]." = ".$i;
 				$query = mysql_query("SELECT * FROM codeswaga WHERE category = '$categoryx[3]' AND batchno IS NULL ORDER BY RAND() LIMIT ".$maxnumberperfile);
 				$indexcat['D']++;
+				$myfile = fopen($indexcat['D']."-".$categoryx[3].".txt", "w") or die("Unable to open file!");
+				
 				echo ">>>".$indexcat['D']."</br>";
 					while($row = mysql_fetch_array($query)){
 						$codenumber = $row{"codenumber"};
+						$prizeprint = $row{"prize"};
+						
+						if(is_numeric($prizeprint) == TRUE){
+							$prizeprint = "#N".number_format($prizeprint)."#";
+						}
+						
 						$updatequerySK = mysql_query("UPDATE codeswaga SET batchno = '$index' WHERE codenumber = '$codenumber'");	
+						$codestring = "\"".$index."\",\"".$row{"codenumber"}."\",\"".$prizeprint."\" ".PHP_EOL;
+						fwrite($myfile, $codestring);
 						$index++;
 					}
 				$flag++;
@@ -136,56 +177,8 @@ if($_POST){
 				$i--;
 			}
 			
-		}
-		
+		}		
 	}
-	
-	//echo $querytotaldata[0]['code'];
-	
-	/* $SKQtotaldata = mysql_query("SELECT COUNT(codenumber) AS 'code' FROM codeswaga WHERE batchno IS NULL AND category = 'SK'");
-	$SKtotaldata = mysql_fetch_array($SKQtotaldata);
-	$SKtotalfile = ceil($SKtotaldata['code'] / $maxnumberperfile);
-	/////
-	$GMQtotaldata = mysql_query("SELECT COUNT(codenumber) AS 'code' FROM codeswaga WHERE batchno IS NULL AND category = 'GM'");
-	$GMtotaldata = mysql_fetch_array($GMQtotaldata);
-	$GMtotalfile = ceil($GMtotaldata['code'] / $maxnumberperfile);
-	
-	
-	//echo $totalfile;
-	$index = 1;
-	$GMlimit = $GMtotalfile;
-	$totalfile = $SKtotalfile + $GMtotalfile + 1 ."<br>";
-	
-	//echo "Total File : ".$SKtotalfile + $GMtotalfile."<br>";
-	for($i = 1; $i <= $totalfile; $i++){
-		if($i % 2 == 0 AND $GMlimit > 0){			
-				$queryGM = mysql_query("SELECT * FROM codeswaga WHERE category = 'GM' AND batchno IS NULL ORDER BY RAND() LIMIT ".$maxnumberperfile);
-				$myfile = fopen($i."-GM.txt", "w") or die("Unable to open file!");
-				while($row = mysql_fetch_array($queryGM)){
-				$codenumber = $row{"codenumber"};
-				$updatequerySK = mysql_query("UPDATE codeswaga SET batchno = '$index' WHERE codenumber = '$codenumber'");
-				$codestring = "\"".$index."\",\"".$row{"codenumber"}."\",\"".$row{"prize"}."\",\"".$row{"category"}.PHP_EOL;
-				fwrite($myfile, $codestring);
-				$index++;	
-			}
-			$GMlimit = $GMtotalfile --;
-			//echo $GMlimit."-";
-			//echo $i."GM<br>";
-		}
-		else{
-				$querySK = mysql_query("SELECT * FROM codeswaga WHERE category = 'SK' AND batchno IS NULL ORDER BY RAND() LIMIT ".$maxnumberperfile);
-				$myfile = fopen($i."-SK.txt", "w") or die("Unable to open file!");
-				while($row = mysql_fetch_array($querySK)){
-				$codenumber = $row{"codenumber"};
-				$updatequerySK = mysql_query("UPDATE codeswaga SET batchno = '$index' WHERE codenumber = '$codenumber'");
-				$codestring = "\"".$index."\",\"".$row{"codenumber"}."\",\"".$row{"prize"}."\",\"".$row{"category"}.PHP_EOL;
-				fwrite($myfile, $codestring);
-				$index++;
-				
-			}
-			//echo $i."SK<br>";
-		}
-	} */
 	echo "DONE!!";
 	//$queryGM = mysql_query("SELECT * FROM codeswaga WHERE category = 'GM' AND batchno IS NULL ORDER BY RAND()");
 	

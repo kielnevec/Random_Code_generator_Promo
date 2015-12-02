@@ -59,8 +59,11 @@
 		<td>".$row{"TRYAGAIN"}."</td>
 		<td>".$row{"category"}."</td>
 		</tr>";
+
 	}
 ?>
+
+
 </table>
 <input type ="submit" value="Generate ?"/>
 
